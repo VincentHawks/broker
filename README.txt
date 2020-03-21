@@ -1,4 +1,4 @@
-HTML - src/resources/static
+HTML - src/resources/static/template
 CSS - src/resources/static/css
 JS - src/resources/static/js
 
