@@ -7,9 +7,10 @@
     </title>
 </head>
 <body>
+    <a href="index.html"><h6 align="center">Назад</h6></a>
 	<p align="center"><b><font size="14">Добро пожаловать!</font></b></p> 
     <p align="center"><font size="5">Выберите приоритетные факторы: </font></p>
-	<form action="/private/select" id="form">
+	<form id="form">
     <input type="checkbox" name="hasInform">Информирование об операциях по банковской карте.<Br>
     <input type="text" name="operationalLimit"> Установка лимитов по операциям.<Br>
     <input type="checkbox" name="hasMovementMonitoring">Мониторинг движения средств.<Br>
@@ -31,41 +32,70 @@
     <p></p>
     <input type="submit" name="next" value="Отправить">
     <input type="reset" value="Сбросить">
-	<script> 
-	document.addEventListener('DOMContentLoaded', () => {
+    </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let ajaxSend = (formData) => {
+                fetch('/private/select', { // файл-обработчик
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', // отправляемые данные
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => {
+                        console.log("JSONifying the response...")
+                        return response.json()
+                    })
+                    .then(response => {
+                        console.log("Adding data to the page...")
+                        addData(response)
+                        console.log("Data added.")
+                    })
+                    .catch(error => console.log(error));
+            };
 
-        const ajaxSend = (formData) => {
-            fetch('/private/select', { // файл-обработчик
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', // отправляемые данные
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(response => alert('Отправлено'))
-                .catch(error => console.error(error))
-        };
+            const form = document.getElementById('form');
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
 
-        const form = document.getElementById('form');
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            let formData = new FormData(this);
-            formData = Object.fromEntries(formData);
-            for(let field in formData) {
-                if (formData[field] === "on") {
-                    formData[field] = true
+                let formData = new FormData(this);
+                formData = Object.fromEntries(formData);
+                for(let field in formData) {
+                    if (formData[field] === "on") {
+                        formData[field] = true
+                    }
+                    if (formData[field] === "") {
+                        delete formData[field]
+                    }
                 }
-                if (formData[field] === "") {
-                    delete formData[field]
-                }
-            }
-            console.log(formData);
-            ajaxSend(formData);
-            this.reset();
+                console.log(formData);
+                ajaxSend(formData)
+            });
         });
-	});
-	</script>
-	</form>
+
+        let addData = function(data) {
+            console.log(data)
+            let container = document.getElementById("banklist");
+            while(container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            let subheader = document.createElement("div");
+            subheader.innerHTML = "<p>Список банков, удовлетворяющих вашим критериям:</p>";
+            container.appendChild(subheader);
+            if(data.length == 0) {
+                let div = document.createElement("div")
+                div.innerHTML = '<h3>Извините, ничего не нашлось!</h3>'
+            }
+            for (let i = 0; i < data.length; i++) {
+                let div = document.createElement("div")
+                div.innerHTML = '<h3>' + data[i].name + '</h3>';
+                container.appendChild(div);
+            }
+        }
+    </script>
+    <div id="banklist">
+
+    </div>
 </body>
 
