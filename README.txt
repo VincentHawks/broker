@@ -10,4 +10,4 @@ src/main/java/ru/hse/broker/controllers/BankController
 
 Конструкции типа /bank/{id} означают, что при отправке запроса на /bank/1 переменная id будет 1
 
-Во всех запросах тело должно содержать media-type: application/json
+Во всех POST-запросах тело должно содержать media-type: application/json
