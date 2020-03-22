@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <title>
+    Брокер ДБО 
+    </title>
+</head>
+<body>
+	<p align="center"><b><font size="14">Добро пожаловать!</font></b></p> 
+    <p align="center"><font size="5">Выберите приоритетные факторы: </font></p>
+	<form action="/corporate/select" id="form">
+    <input type="checkbox" name="hasInform">Информирование об операциях по банковской карте.<Br>
+    <input type="text" name="operationalLimit"> Установка лимитов по операциям.<Br>
+    <input type="checkbox" name="hasMovementMonitoring">Монторинг движения средств.<Br>
+    <input type="checkbox" name="hasBiometricProtection">Биометрическая защита.<Br>
+    <input type="checkbox" name="hasInsurance">Страхование.<Br>
+    <input type="checkbox" name="hasMobileApp">Наличие мобильного приложения.<Br>
+    <input type="checkbox" name="canDeposit">Открытие вклада.<Br>
+    <input type="checkbox" name="canCredit">Открытие кредита.<Br>
+    <input type="checkbox" name="doesBasicPayments"> Проведение платежей. <Br>
+    <input type="checkbox" name="canMakeDocuments">Подготовка документов в ФНС/ПФР.<Br>
+    <input type="checkbox" name="hasOnlineBookkeeping">Онлайн-бухгалтерия.<Br>
+    <input type="checkbox" name="canEmitAndControlCorporateCards">Выпуск корпоративных карт/ управление ими.<Br>
+    <input type="text" name="analytics"> Аналитика доходов и расходов.<Br>
+    <input type="checkbox" name="canGetOperationHistory">Получение выписок по операциям.<Br>
+    <input type="checkbox" name="hasTemplates">Шаблонирование платежей.<Br>
+    <input type="checkbox" name="hasAutopay">Автоплатежи.<Br>
+    <input type="text" name="encashmentFee"> Услуги инкассации.<Br>
+    <input type="checkbox" name="supportsDifferentCurrencies">Валютные операции.<Br>
+    <input type="text" name="acquiringFee"> Эквайринг.<Br>
+    <input type="checkbox" name="hasOnlineSupport">Онлайн чат поддержки.<Br>
+    <input type="text" name="monthlyManagerFee"> Личный менеджер (месяц). <Br>
+    <p></p>
+    <input type="submit" name="next" value="Отправить">
+    <input type="reset" value="Сбросить">
+    </form>
+    <script> 
+        document.addEventListener('DOMContentLoaded', () => {
+            const ajaxSend = (formData) => {
+                fetch('/corporate/select', { // файл-обработчик
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', // отправляемые данные
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => alert('Отправлено'))
+                    .catch(error => console.error(error))
+            };
+
+            const form = document.getElementById('form');
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+                formData = Object.fromEntries(formData);
+                for(let field in formData) {
+                    if (formData[field] === "on") {
+                        formData[field] = true
+                    }
+                    if (formData[field] === "") {
+                        delete formData[field]
+                    }
+                }
+                console.log(formData);
+                ajaxSend(formData);
+                this.reset();
+            });
+        });
+	</script>
+</body>

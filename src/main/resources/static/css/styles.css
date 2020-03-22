@@ -1,7 +1,8 @@
 h1 {
-    font-family: "Segoe UI Light";
+    font-family: "Segoe UI";
 }
 
 p {
     color: darkblue;
+    font-family: "Segoe UI Light";
 }

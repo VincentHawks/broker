@@ -46,7 +46,7 @@ public class BankCorp {
     private boolean canMakeDocuments;
 
     @CsvBindByPosition(position = 11)
-    private boolean hasOnlineBookkeeping;
+    private boolean hasOnlineAccounting;
 
     @CsvBindByPosition(position = 12)
     private boolean canEmitAndControlCorporateCards;
@@ -76,5 +76,5 @@ public class BankCorp {
     private boolean hasOnlineSupport;
 
     @CsvBindByPosition(position = 21)
-    private String monthlyManagerFee;
+    private String monthlyManagerCost;
 }

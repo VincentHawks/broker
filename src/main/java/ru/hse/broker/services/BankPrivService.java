@@ -2,6 +2,7 @@ package ru.hse.broker.services;
 
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import ru.hse.broker.exceptions.ResourceNotFoundException;
 import ru.hse.broker.models.BankPriv;
 import ru.hse.broker.repositories.BankPrivRepository;
 
@@ -18,6 +19,10 @@ public class BankPrivService {
 
     public List<BankPriv> getAll() {
         return repository.findAll();
+    }
+
+    public BankPriv getByName(String name) throws ResourceNotFoundException {
+        return repository.findByName(name).orElseThrow(ResourceNotFoundException::new);
     }
 
     public BankPriv saveAndFlush(@NonNull BankPriv entry) {

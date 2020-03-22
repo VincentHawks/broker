@@ -4,7 +4,6 @@ import com.opencsv.bean.CsvBindByPosition;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @NoArgsConstructor
@@ -17,10 +16,10 @@ public class BankPriv {
     private String name;
 
     @CsvBindByPosition(position = 1)
-    private boolean doesInform;
+    private boolean hasInform;
 
     @CsvBindByPosition(position = 2)
-    private long dailyLimit;
+    private int dailyLimit;
 
     @CsvBindByPosition(position = 3)
     private boolean hasMovementMonitoring;
@@ -29,7 +28,7 @@ public class BankPriv {
     private boolean hasBiometricProtection;
 
     @CsvBindByPosition(position = 5)
-    private boolean insurance;
+    private boolean hasInsurance;
 
     @CsvBindByPosition(position = 6)
     private boolean hasMobileApp;

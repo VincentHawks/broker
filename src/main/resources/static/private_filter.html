@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <title>
+    Брокер ДБО 
+    </title>
+</head>
+<body>
+	<p align="center"><b><font size="14">Добро пожаловать!</font></b></p> 
+    <p align="center"><font size="5">Выберите приоритетные факторы: </font></p>
+	<form action="/private/select" id="form">
+    <input type="checkbox" name="hasInform">Информирование об операциях по банковской карте.<Br>
+    <input type="text" name="operationalLimit"> Установка лимитов по операциям.<Br>
+    <input type="checkbox" name="hasMovementMonitoring">Мониторинг движения средств.<Br>
+    <input type="checkbox" name="hasBiometricProtection">Биометрическая защита.<Br>
+    <input type="checkbox" name="hasInsurance">Страхование.<Br>
+    <input type="checkbox" name="hasMobileApp">Наличие мобильного приложения.<Br>
+    <input type="checkbox" name="canDeposit">Открытие вклада.<Br>
+    <input type="checkbox" name="canCredit">Открытие кредита.<Br>
+    <input type="checkbox" name="doesBasicPayments">Проведение основных платежей.<Br>
+    <input type="checkbox" name="canBindExternalCards">Привязка сторонныих карт.<Br>
+    <input type="checkbox" name="canGetOperationHistory">Получение выписок по операциям.<Br>
+    <input type="checkbox" name="hasAutopay">Автоплатежи.<Br>
+    <input type="text" name="concierge"> Консьерж-сервис.<Br>
+    <input type="checkbox" name="hasAnalytics">Аналитика доходов и расходов в приложении.<Br>
+    <input type="checkbox" name="canTransferToPhone">Переводы по номеру телефона.<Br>
+    <input type="checkbox" name="hasTemplates">Шаблонирование платежей.<Br>
+    <input type="checkbox" name="canOpenMoreCards">Открытие дополнительных карт (кредитные/дебетовые).<Br>
+    <input type="checkbox" name="hasOnlineSupport">Онлайн чат поддержки. <Br>
+    <p></p>
+    <input type="submit" name="next" value="Отправить">
+    <input type="reset" value="Сбросить">
+	<script> 
+	document.addEventListener('DOMContentLoaded', () => {
+
+        const ajaxSend = (formData) => {
+            fetch('/private/select', { // файл-обработчик
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // отправляемые данные
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => alert('Отправлено'))
+                .catch(error => console.error(error))
+        };
+
+        const form = document.getElementById('form');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+            formData = Object.fromEntries(formData);
+            for(let field in formData) {
+                if (formData[field] === "on") {
+                    formData[field] = true
+                }
+                if (formData[field] === "") {
+                    delete formData[field]
+                }
+            }
+            console.log(formData);
+            ajaxSend(formData);
+            this.reset();
+        });
+	});
+	</script>
+	</form>
+</body>
+
